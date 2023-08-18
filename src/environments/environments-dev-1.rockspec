@@ -5,11 +5,12 @@ source = {
 }
 description = {
    homepage = "https://github.com/pyrlkit/pyrlkit",
-   license = "*** please specify a license ***"
+   license = "GNU GPL3"
 }
 build = {
    type = "builtin",
    modules = {
-      main = "main.lua"
+      main = "main.lua",
+      movements = "lib/movements.lua"
    }
 }
