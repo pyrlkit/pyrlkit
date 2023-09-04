@@ -3,16 +3,18 @@ import random
 import numpy as np
 from collections import deque
 
+import inspect
 import os
 import sys
-import pathlib
 
-PACKAGE_PARENT = pathlib.Path(__file__).parent.parent
-SCRIPT_DIR = PACKAGE_PARENT / "environments"
-sys.path.append(str(SCRIPT_DIR))
-from snake import SnakeGameAI,Direction,Point
-from model import Linear_QNet, QTrainer
-from helper import plot
+current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir)
+
+# from snake import SnakeGameAI,Direction,Point
+from environments.snake import SnakeGameAI,Direction,Point
+from models.q_linear import LinearQNn,LinearQTrainer
+from scripts.plot import plot
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -25,8 +27,8 @@ class SnakeAgent:
         self.epsilon = 0 
         self.gamma = 0.9 
         self.memory = deque(maxlen=MAX_MEMORY) 
-        self.model = Linear_QNet(11, 256, 3)
-        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+        self.model = LinearQNn(11, 256, 3)
+        self.trainer = LinearQTrainer(self.model, learning_rate=LR, gamma=self.gamma)
 
 
     def get_state(self, game):
@@ -105,7 +107,7 @@ def train():
     plot_mean_scores = []
     total_score = 0
     record = 0
-    agent = Agent()
+    agent = SnakeAgent()
     game = SnakeGameAI()
     while True:
         state_old = agent.get_state(game)
@@ -119,7 +121,7 @@ def train():
         agent.remember(state_old, final_move, reward, state_new, done)
 
         if done:
-            game.reset()
+            game.reset_state()
             agent.n_games += 1
             agent.train_long_memory()
 

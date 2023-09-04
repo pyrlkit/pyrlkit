@@ -29,7 +29,7 @@ class LinearQTrainer:
         self.learning_rate = learning_rate
         self.gamma = gamma
         self.model = model
-        self.optimizer = optim.Adam(model.parameters(), learning_rate=self.learning_rate)
+        self.optimizer = optim.Adam(model.parameters(), lr=self.learning_rate)
         self.criterion = nn.MSELoss()
 
     def train_step(self, state, action, reward, next_state, done):
