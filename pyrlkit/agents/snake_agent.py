@@ -22,13 +22,15 @@ LR = 0.001
 
 class SnakeAgent:
 
-    def __init__(self):
+    def __init__(self,learning_rate,hidden_size):
         self.n_games = 0
         self.epsilon = 0 
+        self.learning_rate = learning_rate
+        self.hidden_size = hidden_size
         self.gamma = 0.9 
         self.memory = deque(maxlen=MAX_MEMORY) 
-        self.model = LinearQNn(11, 256, 3)
-        self.trainer = LinearQTrainer(self.model, learning_rate=LR, gamma=self.gamma)
+        self.model = LinearQNn(11, self.hidden_size, 3)
+        self.trainer = LinearQTrainer(self.model, learning_rate=self.learning_rate, gamma=self.gamma)
 
 
     def get_state(self, game):
@@ -102,12 +104,12 @@ class SnakeAgent:
         return final_move
 
 
-def train():
+def train(learning_rate,hidden_size):
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
     record = 0
-    agent = SnakeAgent()
+    agent = SnakeAgent(learning_rate=learning_rate,hidden_size=hidden_size)
     game = SnakeGameAI()
     while True:
         state_old = agent.get_state(game)
