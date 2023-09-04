@@ -5,6 +5,12 @@ import torch.nn.functional as F
 import os
 
 class LinearQNn(nn.Module):
+    """
+    Pytorch model definition
+
+    Args:
+        nn (_type_): _description_
+    """
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
         self.linear1 = nn.Linear(input_size, hidden_size)
@@ -25,6 +31,7 @@ class LinearQNn(nn.Module):
 
 
 class LinearQTrainer:
+    """Using the model to implement training, this method will be customisable in the future"""
     def __init__(self, model, learning_rate, gamma):
         self.learning_rate = learning_rate
         self.gamma = gamma

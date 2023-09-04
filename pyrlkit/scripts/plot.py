@@ -4,6 +4,11 @@ from IPython import display
 plt.ion()
 
 def plot(scores, mean_scores):
+    """Takes in the scores and created a general plot of the models performance
+    Args:
+        scores (_type_): _description_
+        mean_scores (_type_): _description_
+    """
     display.clear_output(wait=True)
     display.display(plt.gcf())
     plt.clf()

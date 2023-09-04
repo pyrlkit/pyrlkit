@@ -18,9 +18,12 @@ from scripts.plot import plot
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
-LR = 0.001
 
 class SnakeAgent:
+    """
+    Brings together the model and the environment and trains the agent, 
+    using the model 
+    """
 
     def __init__(self,learning_rate,hidden_size):
         self.n_games = 0
@@ -104,7 +107,14 @@ class SnakeAgent:
         return final_move
 
 
-def train(learning_rate,hidden_size):
+def train(learning_rate:int,hidden_size:int):
+    """_summary_
+    The main training function which can be called to train the function
+    
+    Args:
+        learning_rate (int): _description_
+        hidden_size (int): _description_
+    """
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
