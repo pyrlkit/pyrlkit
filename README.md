@@ -34,6 +34,7 @@
 ## 🧐 About <a name = "about"></a>
 
 A python library for reinforcement learning in which all the environments and agents can be customised. A high level abstraction meant to reduce the amoutn of code written, while providing robustness and versatility if one wants to tune the scenarios firther
+We mean to create two versions of this library, one written in python purely and one more lua
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
