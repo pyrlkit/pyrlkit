@@ -37,7 +37,9 @@ class SnakeGameAI:
         self.reset_state()
 
     def reset_state(self):
-        # init game state
+        """_summary_
+        If we lose initiliase the game state once again
+        """
         self.direction = Direction.RIGHT
 
         self.head = Point(self.width / 2, self.height / 2)
@@ -159,6 +161,8 @@ def test():
     
 class SnakeGameHuman:
     
+    """Human can also play the snake if they want"""
+
     def __init__(self, width=800, height=600):
         self.width = width
         self.height = height
