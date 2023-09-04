@@ -29,6 +29,7 @@
   - [Prerequisites](#prerequisites)
   - [Installing](#installing)
 - [🎈 Usage ](#-usage-)
+- [⛏️ Built Using ](#️-built-using-)
 - [🎉 Acknowledgements ](#-acknowledgements-)
 
 ## 🧐 About <a name = "about"></a>
@@ -53,7 +54,9 @@ A simple `pip install pyrlkit` should install the library, once it is up and run
 
 Documentation on the library will be made separately and hosted, it will be linked here in the future
 
-<!-- ## ⛏️ Built Using <a name = "built_using"></a> -->
+## ⛏️ Built Using <a name = "built_using"></a>
+- <a href = "www.pytorch.org">Torch</a>
+- <a href = "www.pygame.org">PyGame</a>
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
