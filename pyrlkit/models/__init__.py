@@ -1,1 +1,1 @@
-from .q_linear import LinearQTrainer,LinearQNn
+from .q_linear import LinearQTrainer, LinearQNn

@@ -12,29 +12,31 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
 # from snake import SnakeGameAI,Direction,Point
-from environments.snake import SnakeGameAI,Direction,Point
-from models.q_linear import LinearQNn,LinearQTrainer
+from environments.snake import SnakeGameAI, Direction, Point
+from models.q_linear import LinearQNn, LinearQTrainer
 from scripts.plot import plot
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 
+
 class SnakeAgent:
     """
-    Brings together the model and the environment and trains the agent, 
-    using the model 
+    Brings together the model and the environment and trains the agent,
+    using the model
     """
 
-    def __init__(self,learning_rate,hidden_size):
+    def __init__(self, learning_rate, hidden_size):
         self.n_games = 0
-        self.epsilon = 0 
+        self.epsilon = 0
         self.learning_rate = learning_rate
         self.hidden_size = hidden_size
-        self.gamma = 0.9 
-        self.memory = deque(maxlen=MAX_MEMORY) 
+        self.gamma = 0.9
+        self.memory = deque(maxlen=MAX_MEMORY)
         self.model = LinearQNn(11, self.hidden_size, 3)
-        self.trainer = LinearQTrainer(self.model, learning_rate=self.learning_rate, gamma=self.gamma)
-
+        self.trainer = LinearQTrainer(
+            self.model, learning_rate=self.learning_rate, gamma=self.gamma
+        )
 
     def get_state(self, game):
         head = game.snake[0]
@@ -42,47 +44,43 @@ class SnakeAgent:
         point_r = Point(head.x + 20, head.y)
         point_u = Point(head.x, head.y - 20)
         point_d = Point(head.x, head.y + 20)
-        
+
         dir_l = game.direction == Direction.LEFT
         dir_r = game.direction == Direction.RIGHT
         dir_u = game.direction == Direction.UP
         dir_d = game.direction == Direction.DOWN
 
         state = [
-            (dir_r and game.is_collision(point_r)) or 
-            (dir_l and game.is_collision(point_l)) or 
-            (dir_u and game.is_collision(point_u)) or 
-            (dir_d and game.is_collision(point_d)),
-
-            (dir_u and game.is_collision(point_r)) or 
-            (dir_d and game.is_collision(point_l)) or 
-            (dir_l and game.is_collision(point_u)) or 
-            (dir_r and game.is_collision(point_d)),
-
-            (dir_d and game.is_collision(point_r)) or 
-            (dir_u and game.is_collision(point_l)) or 
-            (dir_r and game.is_collision(point_u)) or 
-            (dir_l and game.is_collision(point_d)),
-            
+            (dir_r and game.is_collision(point_r))
+            or (dir_l and game.is_collision(point_l))
+            or (dir_u and game.is_collision(point_u))
+            or (dir_d and game.is_collision(point_d)),
+            (dir_u and game.is_collision(point_r))
+            or (dir_d and game.is_collision(point_l))
+            or (dir_l and game.is_collision(point_u))
+            or (dir_r and game.is_collision(point_d)),
+            (dir_d and game.is_collision(point_r))
+            or (dir_u and game.is_collision(point_l))
+            or (dir_r and game.is_collision(point_u))
+            or (dir_l and game.is_collision(point_d)),
             dir_l,
             dir_r,
             dir_u,
             dir_d,
-            
-            # Food location 
-            game.food.x < game.head.x,  
-            game.food.x > game.head.x,  
-            game.food.y < game.head.y,  
-            game.food.y > game.head.y  
+            # Food location
+            game.food.x < game.head.x,
+            game.food.x > game.head.x,
+            game.food.y < game.head.y,
+            game.food.y > game.head.y,
         ]
         return np.array(state, dtype=int)
 
     def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done)) 
+        self.memory.append((state, action, reward, next_state, done))
 
     def train_long_memory(self):
         if len(self.memory) > BATCH_SIZE:
-            mini_sample = random.sample(self.memory, BATCH_SIZE) 
+            mini_sample = random.sample(self.memory, BATCH_SIZE)
         else:
             mini_sample = self.memory
 
@@ -94,7 +92,7 @@ class SnakeAgent:
 
     def get_action(self, state):
         self.epsilon = 80 - self.n_games
-        final_move = [0,0,0]
+        final_move = [0, 0, 0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0, 2)
             final_move[move] = 1
@@ -107,10 +105,10 @@ class SnakeAgent:
         return final_move
 
 
-def train(learning_rate:int,hidden_size:int):
+def train(learning_rate: int, hidden_size: int):
     """_summary_
     The main training function which can be called to train the function
-    
+
     Args:
         learning_rate (int): _description_
         hidden_size (int): _description_
@@ -119,7 +117,7 @@ def train(learning_rate:int,hidden_size:int):
     plot_mean_scores = []
     total_score = 0
     record = 0
-    agent = SnakeAgent(learning_rate=learning_rate,hidden_size=hidden_size)
+    agent = SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
     game = SnakeGameAI()
     while True:
         state_old = agent.get_state(game)
@@ -141,7 +139,7 @@ def train(learning_rate:int,hidden_size:int):
                 record = score
                 agent.model.save()
 
-            print('Game', agent.n_games, 'Score', score, 'Record:', record)
+            print("Game", agent.n_games, "Score", score, "Record:", record)
 
             plot_scores.append(score)
             total_score += score
@@ -150,5 +148,5 @@ def train(learning_rate:int,hidden_size:int):
             plot(plot_scores, plot_mean_scores)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     train()
