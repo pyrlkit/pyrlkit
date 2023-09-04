@@ -162,3 +162,4 @@ cython_debug/
 /lua
 /lua_modules
 /.luarocks
+pyrlkit/environments/__pycache__
