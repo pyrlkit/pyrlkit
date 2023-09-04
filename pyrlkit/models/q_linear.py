@@ -4,6 +4,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 import os
 
+
 class LinearQNn(nn.Module):
     """
     Pytorch model definition
@@ -11,6 +12,7 @@ class LinearQNn(nn.Module):
     Args:
         nn (_type_): _description_
     """
+
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
         self.linear1 = nn.Linear(input_size, hidden_size)
@@ -21,8 +23,8 @@ class LinearQNn(nn.Module):
         x = self.linear2(x)
         return x
 
-    def save(self, file_name='model.pth'):
-        model_folder_path = './model'
+    def save(self, file_name="model.pth"):
+        model_folder_path = "./model"
         if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
 
@@ -32,6 +34,7 @@ class LinearQNn(nn.Module):
 
 class LinearQTrainer:
     """Using the model to implement training, this method will be customisable in the future"""
+
     def __init__(self, model, learning_rate, gamma):
         self.learning_rate = learning_rate
         self.gamma = gamma
@@ -50,7 +53,7 @@ class LinearQTrainer:
             next_state = torch.unsqueeze(next_state, 0)
             action = torch.unsqueeze(action, 0)
             reward = torch.unsqueeze(reward, 0)
-            done = (done, )
+            done = (done,)
 
         pred = self.model(state)
 
@@ -58,14 +61,14 @@ class LinearQTrainer:
         for idx in range(len(done)):
             Q_new = reward[idx]
             if not done[idx]:
-                Q_new = reward[idx] + self.gamma * torch.max(self.model(next_state[idx]))
+                Q_new = reward[idx] + self.gamma * torch.max(
+                    self.model(next_state[idx])
+                )
 
             target[idx][torch.argmax(action[idx]).item()] = Q_new
-    
+
         self.optimizer.zero_grad()
         loss = self.criterion(target, pred)
         loss.backward()
 
         self.optimizer.step()
-
-
