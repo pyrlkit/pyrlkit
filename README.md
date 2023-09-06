@@ -16,21 +16,22 @@
 
 ---
 
-
-<p align="center"> A Reinforcement Learning framework for python, inspired by OpenAi Gymnasium 
-    <br> 
+<p align="center"> A Reinforcement Learning framework for python, inspired by OpenAi Gymnasium
+    <br>
 </p>
 
 ## 📝 Table of Contents
 
 - [📝 Table of Contents](#-table-of-contents)
-- [🧐 About ](#-about-)
-- [🏁 Getting Started ](#-getting-started-)
+- [🧐 About](#-about-)
+- [🏁 Getting Started](#-getting-started-)
   - [Prerequisites](#prerequisites)
   - [Installing](#installing)
-- [🎈 Usage ](#-usage-)
-- [⛏️ Built Using ](#️-built-using-)
-- [🎉 Acknowledgements ](#-acknowledgements-)
+- [🎈 Usage](#-usage-)
+- [⛏️ Built Using](#️-built-using-)
+- [🎉 Acknowledgements](#-acknowledgements-)
+
+<b>Use black for formatting</b>
 
 ## 🧐 About <a name = "about"></a>
 
@@ -43,18 +44,18 @@ Once written, this library will be uploaded to pip/PyPi and users will be able t
 
 ### Prerequisites
 
-All dependencies will be installled via the pip package 
+All dependencies will be installled via the pip package
 
 ### Installing
 
 A simple `pip install pyrlkit` should install the library, once it is up and running
-
 
 ## 🎈 Usage <a name="usage"></a>
 
 Documentation for the library will be created separately and hosted. It will be linked here in the future.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
+
 - <a href = "www.pytorch.org">Torch</a>
 - <a href = "www.pygame.org">PyGame</a>
 
@@ -65,4 +66,3 @@ Documentation for the library will be created separately and hosted. It will be 
 - <a href="https://github.com/ameya135">Ameya Patil</a>
 - <a href="https://github.com/Bhavya1403">Bhavya Ambardar</a>
 - <a href="https://github.com/viraj-s15">Viraj Shah</a>
-
