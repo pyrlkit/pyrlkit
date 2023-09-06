@@ -1,18 +1,18 @@
-import torch
-import random
-import numpy as np
-from collections import deque
-
 import inspect
 import os
+import random
 import sys
+from collections import deque
+
+import numpy as np
+import torch
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
 # from snake import SnakeGameAI,Direction,Point
-from environments.snake import SnakeGameAI, Direction, Point
+from environments.snake import Direction, Point, SnakeGameAI
 from models.q_linear import LinearQNn, LinearQTrainer
 from scripts.plot import plot
 
@@ -105,7 +105,9 @@ class SnakeAgent:
         return final_move
 
 
-def train(learning_rate: int, hidden_size: int):
+def train(
+    learning_rate: int, hidden_size: int, width=640, height=480, speed=20, block_size=20
+):
     """_summary_
     The main training function which can be called to train the function
 
@@ -118,7 +120,7 @@ def train(learning_rate: int, hidden_size: int):
     total_score = 0
     record = 0
     agent = SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
-    game = SnakeGameAI()
+    game = SnakeGameAI(width=width, height=height, block_size=block_size, speed=speed)
     while True:
         state_old = agent.get_state(game)
         final_move = agent.get_action(state_old)
