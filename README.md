@@ -34,8 +34,8 @@
 
 ## 🧐 About <a name = "about"></a>
 
-A python library for reinforcement learning in which all the environments and agents can be customised. A high level abstraction meant to reduce the amoutn of code written, while providing robustness and versatility if one wants to tune the scenarios firther
-We mean to create two versions of this library, one written in python purely and one more lua
+A Python library for reinforcement learning in which all the environments and agents can be customized. It offers a high-level abstraction intended to reduce the amount of code written, while providing robustness and versatility for users who wish to further fine-tune their scenarios.
+We intend to create two versions of this library: one written purely in Python and another in Lua.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -52,7 +52,7 @@ A simple `pip install pyrlkit` should install the library, once it is up and run
 
 ## 🎈 Usage <a name="usage"></a>
 
-Documentation on the library will be made separately and hosted, it will be linked here in the future
+Documentation for the library will be created separately and hosted. It will be linked here in the future.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 - <a href = "www.pytorch.org">Torch</a>
