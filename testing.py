@@ -1,3 +1,3 @@
 from pyrlkit.agents.snake_agent import train
 
-train(100, 256)
+train(0.001, 256, speed=100)
