@@ -106,7 +106,12 @@ class SnakeAgent:
 
 
 def train(
-    learning_rate: int, hidden_size: int, width=640, height=480, speed=20, block_size=20
+    learning_rate: float,
+    hidden_size: int,
+    width=640,
+    height=480,
+    speed=20,
+    block_size=20,
 ):
     """_summary_
     The main training function which can be called to train the function
