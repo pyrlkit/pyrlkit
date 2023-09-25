@@ -107,7 +107,7 @@ class SnakeAgent:
         return final_move
 
 
-def create_model(learning_rate=0.001,hidden_size=32):
+def create_model(learning_rate=0.001, hidden_size=32):
     """_summary_
 
     Args:
@@ -115,22 +115,22 @@ def create_model(learning_rate=0.001,hidden_size=32):
         hidden_size (int, optional): Defaults to 32.
 
     Returns:
-       SnakeAgent: SnakeAgent Class 
+       SnakeAgent: SnakeAgent Class
     """
-    return SnakeAgent(learning_rate=learning_rate,hidden_size=hidden_size)
+    return SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
 
-def create_env(width=800,height=600,block_size=20,speed=20):
-    return SnakeGameAI(width=width,height=height,block_size=block_size,speed=speed)
-    
+
+def create_env(width=800, height=600, block_size=20, speed=20):
+    return SnakeGameAI(width=width, height=height, block_size=block_size, speed=speed)
+
 
 def train(
     learning_rate: float,
     hidden_size: int,
-    agent:SnakeAgent,
-    env:SnakeGameAI,
-    num_cycles = 100,
+    agent: SnakeAgent,
+    env: SnakeGameAI,
+    num_cycles=100,
     width=640,
-    
     height=480,
     speed=20,
     block_size=20,
@@ -139,8 +139,8 @@ def train(
     The main training function which can be called to train the function
 
     Args:
-        learning_rate (int) 
-        hidden_size (int): 
+        learning_rate (int)
+        hidden_size (int):
     """
     plot_scores = []
     plot_mean_scores = []
@@ -175,12 +175,12 @@ def train(
             num_cycles -= 1
 
 
-def save_model_as_pythorch(agent:SnakeAgent,directory:str): 
+def save_model_as_pythorch(agent: SnakeAgent, directory: str):
     """Can be used t save the model as a pytorch binary
 
     Args:
-        agent (SnakeAgent): Agent from class above 
-        directory (str): Directory to store the movel 
+        agent (SnakeAgent): Agent from class above
+        directory (str): Directory to store the movel
     """
     model = agent.model
     model.save(f"{directory}_{agent.name}.pth")
