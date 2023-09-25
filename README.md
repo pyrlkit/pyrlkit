@@ -11,7 +11,7 @@
 [![GitHub Issues](https://img.shields.io/github/issues/pyrlkit/pyrlkit.svg)](https://github.com/pyrlkit/pyrlkit/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
 [![License](https://img.shields.io/badge/license-GNU%20GPL3-blue.svg)](/LICENSE)
-
+![Tests](https://github.com/pyrlkit/pyrlkit/actions/workflows/.github/workflows/python-app.yml/badge.svg)
 </div>
 
 ---
@@ -23,13 +23,13 @@
 ## 📝 Table of Contents
 
 - [📝 Table of Contents](#-table-of-contents)
-- [🧐 About](#-about-)
-- [🏁 Getting Started](#-getting-started-)
+- [🧐 About ](#-about-)
+- [🏁 Getting Started ](#-getting-started-)
   - [Prerequisites](#prerequisites)
   - [Installing](#installing)
-- [🎈 Usage](#-usage-)
-- [⛏️ Built Using](#️-built-using-)
-- [🎉 Acknowledgements](#-acknowledgements-)
+- [🎈 Usage ](#-usage-)
+- [⛏️ Built Using ](#️-built-using-)
+- [🎉 Acknowledgements ](#-acknowledgements-)
 
 <b>Use black for formatting</b>
 
