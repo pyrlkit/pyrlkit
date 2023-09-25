@@ -3,6 +3,7 @@ import os
 import random
 import sys
 from collections import deque
+from tkinter import W
 
 import numpy as np
 import torch
@@ -32,6 +33,7 @@ class SnakeAgent:
         self.learning_rate = learning_rate
         self.hidden_size = hidden_size
         self.gamma = 0.9
+        self.name = "SnakeAgent"
         self.memory = deque(maxlen=MAX_MEMORY)
         self.model = LinearQNn(11, self.hidden_size, 3)
         self.trainer = LinearQTrainer(
@@ -105,10 +107,30 @@ class SnakeAgent:
         return final_move
 
 
+def create_model(learning_rate=0.001,hidden_size=32):
+    """_summary_
+
+    Args:
+        learning_rate (float, optional): Defaults to 0.001.
+        hidden_size (int, optional): Defaults to 32.
+
+    Returns:
+       SnakeAgent: SnakeAgent Class 
+    """
+    return SnakeAgent(learning_rate=learning_rate,hidden_size=hidden_size)
+
+def create_env(width=800,height=600,block_size=20,speed=20):
+    return SnakeGameAI(width=width,height=height,block_size=block_size,speed=speed)
+    
+
 def train(
     learning_rate: float,
     hidden_size: int,
+    agent:SnakeAgent,
+    env:SnakeGameAI,
+    num_cycles = 100,
     width=640,
+    
     height=480,
     speed=20,
     block_size=20,
@@ -117,28 +139,25 @@ def train(
     The main training function which can be called to train the function
 
     Args:
-        learning_rate (int): _description_
-        hidden_size (int): _description_
+        learning_rate (int) 
+        hidden_size (int): 
     """
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
     record = 0
-    agent = SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
-    game = SnakeGameAI(width=width, height=height, block_size=block_size, speed=speed)
-    while True:
-        state_old = agent.get_state(game)
+    while num_cycles >= 0:
+        state_old = agent.get_state(env)
         final_move = agent.get_action(state_old)
 
-        reward, done, score = game.play_step(final_move)
-        state_new = agent.get_state(game)
+        reward, done, score = env.play_step(final_move)
+        state_new = agent.get_state(env)
 
         agent.train_short_memory(state_old, final_move, reward, state_new, done)
 
         agent.remember(state_old, final_move, reward, state_new, done)
-
         if done:
-            game.reset_state()
+            env.reset_state()
             agent.n_games += 1
             agent.train_long_memory()
 
@@ -153,6 +172,18 @@ def train(
             mean_score = total_score / agent.n_games
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
+            num_cycles -= 1
+
+
+def save_model_as_pythorch(agent:SnakeAgent,directory:str): 
+    """Can be used t save the model as a pytorch binary
+
+    Args:
+        agent (SnakeAgent): Agent from class above 
+        directory (str): Directory to store the movel 
+    """
+    model = agent.model
+    model.save(f"{directory}_{agent.name}.pth")
 
 
 if __name__ == "__main__":
