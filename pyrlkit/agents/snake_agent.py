@@ -41,8 +41,8 @@ class SnakeAgent:
         )
 
     def get_state(self, game):
-        try: 
-           head = game.snake[0]
+        try:
+            head = game.snake[0]
             point_l = Point(head.x - 20, head.y)
             point_r = Point(head.x + 20, head.y)
             point_u = Point(head.x, head.y - 20)
@@ -77,16 +77,19 @@ class SnakeAgent:
                 game.food.y > game.head.y,
             ]
             return np.array(state, dtype=int)
-        except Exception as e: 
-            print(f"Something went wrong in the state initialisation \n The error message is")
+        except Exception as e:
+            print(
+                f"Something went wrong in the state initialisation \n The error message is"
+            )
             raise e
-
 
     def remember(self, state, action, reward, next_state, done):
         try:
             self.memory.append((state, action, reward, next_state, done))
         except Exception as e:
-            print(f"Something went wrong in the state management \n The error message is")
+            print(
+                f"Something went wrong in the state management \n The error message is"
+            )
             raise e
 
     def train_long_memory(self):
@@ -98,7 +101,7 @@ class SnakeAgent:
 
             states, actions, rewards, next_states, dones = zip(*mini_sample)
             self.trainer.train_step(states, actions, rewards, next_states, dones)
-        except Exception as e: 
+        except Exception as e:
             print(f"Something went wrong in training \n the error message is")
             raise e
 
@@ -120,7 +123,9 @@ class SnakeAgent:
 
             return final_move
         except Exception as e:
-            print("Something went wrong while fetching the next action \n The error message is")
+            print(
+                "Something went wrong while fetching the next action \n The error message is"
+            )
             raise e
 
 
@@ -138,14 +143,18 @@ def create_model(learning_rate=0.001, hidden_size=32):
         return SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
     except Exception as e:
         print("Something went wrong while creating the model \n The error message is")
-        raise e 
+        raise e
+
 
 def create_env(width=800, height=600, block_size=20, speed=20):
-    try: 
-        return SnakeGameAI(width=width, height=height, block_size=block_size, speed=speed)
+    try:
+        return SnakeGameAI(
+            width=width, height=height, block_size=block_size, speed=speed
+        )
     except Exception as e:
         print("Something went wrong while creating the environment")
         raise e
+
 
 def train(
     learning_rate: float,
@@ -200,7 +209,6 @@ def train(
     except Exception as e:
         print("Something went wrong while training the model \n The error message is")
         raise e
-            
 
 
 def save_model_as_pythorch(agent: SnakeAgent, directory: str):
