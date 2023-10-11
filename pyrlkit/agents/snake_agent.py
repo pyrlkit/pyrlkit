@@ -41,70 +41,87 @@ class SnakeAgent:
         )
 
     def get_state(self, game):
-        head = game.snake[0]
-        point_l = Point(head.x - 20, head.y)
-        point_r = Point(head.x + 20, head.y)
-        point_u = Point(head.x, head.y - 20)
-        point_d = Point(head.x, head.y + 20)
+        try: 
+           head = game.snake[0]
+            point_l = Point(head.x - 20, head.y)
+            point_r = Point(head.x + 20, head.y)
+            point_u = Point(head.x, head.y - 20)
+            point_d = Point(head.x, head.y + 20)
 
-        dir_l = game.direction == Direction.LEFT
-        dir_r = game.direction == Direction.RIGHT
-        dir_u = game.direction == Direction.UP
-        dir_d = game.direction == Direction.DOWN
+            dir_l = game.direction == Direction.LEFT
+            dir_r = game.direction == Direction.RIGHT
+            dir_u = game.direction == Direction.UP
+            dir_d = game.direction == Direction.DOWN
 
-        state = [
-            (dir_r and game.is_collision(point_r))
-            or (dir_l and game.is_collision(point_l))
-            or (dir_u and game.is_collision(point_u))
-            or (dir_d and game.is_collision(point_d)),
-            (dir_u and game.is_collision(point_r))
-            or (dir_d and game.is_collision(point_l))
-            or (dir_l and game.is_collision(point_u))
-            or (dir_r and game.is_collision(point_d)),
-            (dir_d and game.is_collision(point_r))
-            or (dir_u and game.is_collision(point_l))
-            or (dir_r and game.is_collision(point_u))
-            or (dir_l and game.is_collision(point_d)),
-            dir_l,
-            dir_r,
-            dir_u,
-            dir_d,
-            # Food location
-            game.food.x < game.head.x,
-            game.food.x > game.head.x,
-            game.food.y < game.head.y,
-            game.food.y > game.head.y,
-        ]
-        return np.array(state, dtype=int)
+            state = [
+                (dir_r and game.is_collision(point_r))
+                or (dir_l and game.is_collision(point_l))
+                or (dir_u and game.is_collision(point_u))
+                or (dir_d and game.is_collision(point_d)),
+                (dir_u and game.is_collision(point_r))
+                or (dir_d and game.is_collision(point_l))
+                or (dir_l and game.is_collision(point_u))
+                or (dir_r and game.is_collision(point_d)),
+                (dir_d and game.is_collision(point_r))
+                or (dir_u and game.is_collision(point_l))
+                or (dir_r and game.is_collision(point_u))
+                or (dir_l and game.is_collision(point_d)),
+                dir_l,
+                dir_r,
+                dir_u,
+                dir_d,
+                # Food location
+                game.food.x < game.head.x,
+                game.food.x > game.head.x,
+                game.food.y < game.head.y,
+                game.food.y > game.head.y,
+            ]
+            return np.array(state, dtype=int)
+        except Exception as e: 
+            print(f"Something went wrong in the state initialisation \n The error message is")
+            raise e
+
 
     def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done))
+        try:
+            self.memory.append((state, action, reward, next_state, done))
+        except Exception as e:
+            print(f"Something went wrong in the state management \n The error message is")
+            raise e
 
     def train_long_memory(self):
-        if len(self.memory) > BATCH_SIZE:
-            mini_sample = random.sample(self.memory, BATCH_SIZE)
-        else:
-            mini_sample = self.memory
+        try:
+            if len(self.memory) > BATCH_SIZE:
+                mini_sample = random.sample(self.memory, BATCH_SIZE)
+            else:
+                mini_sample = self.memory
 
-        states, actions, rewards, next_states, dones = zip(*mini_sample)
-        self.trainer.train_step(states, actions, rewards, next_states, dones)
+            states, actions, rewards, next_states, dones = zip(*mini_sample)
+            self.trainer.train_step(states, actions, rewards, next_states, dones)
+        except Exception as e: 
+            print(f"Something went wrong in training \n the error message is")
+            raise e
 
     def train_short_memory(self, state, action, reward, next_state, done):
         self.trainer.train_step(state, action, reward, next_state, done)
 
     def get_action(self, state):
-        self.epsilon = 80 - self.n_games
-        final_move = [0, 0, 0]
-        if random.randint(0, 200) < self.epsilon:
-            move = random.randint(0, 2)
-            final_move[move] = 1
-        else:
-            state0 = torch.tensor(state, dtype=torch.float)
-            prediction = self.model(state0)
-            move = torch.argmax(prediction).item()
-            final_move[move] = 1
+        try:
+            self.epsilon = 80 - self.n_games
+            final_move = [0, 0, 0]
+            if random.randint(0, 200) < self.epsilon:
+                move = random.randint(0, 2)
+                final_move[move] = 1
+            else:
+                state0 = torch.tensor(state, dtype=torch.float)
+                prediction = self.model(state0)
+                move = torch.argmax(prediction).item()
+                final_move[move] = 1
 
-        return final_move
+            return final_move
+        except Exception as e:
+            print("Something went wrong while fetching the next action \n The error message is")
+            raise e
 
 
 def create_model(learning_rate=0.001, hidden_size=32):
@@ -117,12 +134,18 @@ def create_model(learning_rate=0.001, hidden_size=32):
     Returns:
        SnakeAgent: SnakeAgent Class
     """
-    return SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
-
+    try:
+        return SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
+    except Exception as e:
+        print("Something went wrong while creating the model \n The error message is")
+        raise e 
 
 def create_env(width=800, height=600, block_size=20, speed=20):
-    return SnakeGameAI(width=width, height=height, block_size=block_size, speed=speed)
-
+    try: 
+        return SnakeGameAI(width=width, height=height, block_size=block_size, speed=speed)
+    except Exception as e:
+        print("Something went wrong while creating the environment")
+        raise e
 
 def train(
     learning_rate: float,
@@ -142,37 +165,42 @@ def train(
         learning_rate (int)
         hidden_size (int):
     """
-    plot_scores = []
-    plot_mean_scores = []
-    total_score = 0
-    record = 0
-    while num_cycles >= 0:
-        state_old = agent.get_state(env)
-        final_move = agent.get_action(state_old)
+    try:
+        plot_scores = []
+        plot_mean_scores = []
+        total_score = 0
+        record = 0
+        while num_cycles >= 0:
+            state_old = agent.get_state(env)
+            final_move = agent.get_action(state_old)
 
-        reward, done, score = env.play_step(final_move)
-        state_new = agent.get_state(env)
+            reward, done, score = env.play_step(final_move)
+            state_new = agent.get_state(env)
 
-        agent.train_short_memory(state_old, final_move, reward, state_new, done)
+            agent.train_short_memory(state_old, final_move, reward, state_new, done)
 
-        agent.remember(state_old, final_move, reward, state_new, done)
-        if done:
-            env.reset_state()
-            agent.n_games += 1
-            agent.train_long_memory()
+            agent.remember(state_old, final_move, reward, state_new, done)
+            if done:
+                env.reset_state()
+                agent.n_games += 1
+                agent.train_long_memory()
 
-            if score > record:
-                record = score
-                agent.model.save()
+                if score > record:
+                    record = score
+                    agent.model.save()
 
-            print("Game", agent.n_games, "Score", score, "Record:", record)
+                print("Game", agent.n_games, "Score", score, "Record:", record)
 
-            plot_scores.append(score)
-            total_score += score
-            mean_score = total_score / agent.n_games
-            plot_mean_scores.append(mean_score)
-            plot(plot_scores, plot_mean_scores)
-            num_cycles -= 1
+                plot_scores.append(score)
+                total_score += score
+                mean_score = total_score / agent.n_games
+                plot_mean_scores.append(mean_score)
+                plot(plot_scores, plot_mean_scores)
+                num_cycles -= 1
+    except Exception as e:
+        print("Something went wrong while training the model \n The error message is")
+        raise e
+            
 
 
 def save_model_as_pythorch(agent: SnakeAgent, directory: str):
