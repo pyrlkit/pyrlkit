@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pyrlkit"
+version = "0.1.0"
+description = "A deep reinforceent learning library"
+authors = ["Viraj Shah <viraj.v.shah0@gmailcom>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torch = "^2.1.0"
+numpy = "^1.26.1"
+matplotlib = "^3.8.1"
+matplotlib-inline = "^0.1.6"
+pygame = "^2.5.2"
+Pillow = "^10.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
