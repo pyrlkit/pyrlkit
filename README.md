@@ -42,6 +42,15 @@ We intend to create two versions of this library: one written purely in Python a
 
 Once written, this library will be uploaded to pip/PyPi and users will be able to access the library.
 
+For using the library locally, we recommend using poetry. Make sure you have poetry installed.
+
+Run `poetry install`
+
+We have a poetry lockfile to make sure the correct dependencies are set correctly
+
+You can build it as well but keep in mind that it is a work in progress
+
+
 ### Prerequisites
 
 All dependencies will be installled via the pip package
