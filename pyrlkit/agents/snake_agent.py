@@ -16,6 +16,13 @@ sys.path.insert(0, parent_dir)
 from environments.snake import Direction, Point, SnakeGameAI
 from models.q_linear import LinearQNn, LinearQTrainer
 from scripts.plot import plot
+from exceptions.exceptions import (
+    EnvCreationException,
+    ModelCreationException,
+    StateInitException,
+    StateManagementException,
+    TrainingException,
+)
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -77,20 +84,14 @@ class SnakeAgent:
                 game.food.y > game.head.y,
             ]
             return np.array(state, dtype=int)
-        except Exception as e:
-            print(
-                f"Something went wrong in the state initialisation \n The error message is"
-            )
-            raise e
+        except Exception:
+            raise StateInitException
 
     def remember(self, state, action, reward, next_state, done):
         try:
             self.memory.append((state, action, reward, next_state, done))
-        except Exception as e:
-            print(
-                f"Something went wrong in the state management \n The error message is"
-            )
-            raise e
+        except Exception:
+            raise StateManagementException(func="remember")
 
     def train_long_memory(self):
         try:
@@ -101,9 +102,8 @@ class SnakeAgent:
 
             states, actions, rewards, next_states, dones = zip(*mini_sample)
             self.trainer.train_step(states, actions, rewards, next_states, dones)
-        except Exception as e:
-            print(f"Something went wrong in training \n the error message is")
-            raise e
+        except Exception:
+            raise TrainingException(func="train_long_memory")
 
     def train_short_memory(self, state, action, reward, next_state, done):
         self.trainer.train_step(state, action, reward, next_state, done)
@@ -123,10 +123,7 @@ class SnakeAgent:
 
             return final_move
         except Exception as e:
-            print(
-                "Something went wrong while fetching the next action \n The error message is"
-            )
-            raise e
+            raise StateManagementException(func="get_action")
 
 
 def create_model(learning_rate=0.001, hidden_size=32):
@@ -141,9 +138,8 @@ def create_model(learning_rate=0.001, hidden_size=32):
     """
     try:
         return SnakeAgent(learning_rate=learning_rate, hidden_size=hidden_size)
-    except Exception as e:
-        print("Something went wrong while creating the model \n The error message is")
-        raise e
+    except Exception:
+        raise ModelCreationException
 
 
 def create_env(width=800, height=600, block_size=20, speed=20):
@@ -151,9 +147,8 @@ def create_env(width=800, height=600, block_size=20, speed=20):
         return SnakeGameAI(
             width=width, height=height, block_size=block_size, speed=speed
         )
-    except Exception as e:
-        print("Something went wrong while creating the environment")
-        raise e
+    except Exception:
+        raise EnvCreationException
 
 
 def train(
@@ -206,9 +201,8 @@ def train(
                 plot_mean_scores.append(mean_score)
                 plot(plot_scores, plot_mean_scores)
                 num_cycles -= 1
-    except Exception as e:
-        print("Something went wrong while training the model \n The error message is")
-        raise e
+    except Exception:
+        raise TrainingException(func="train")
 
 
 def save_model_as_pythorch(agent: SnakeAgent, directory: str):
@@ -222,5 +216,5 @@ def save_model_as_pythorch(agent: SnakeAgent, directory: str):
     model.save(f"{directory}_{agent.name}.pth")
 
 
-if __name__ == "__main__":
-    train()
+# if __name__ == "__main__":
+#     train()
