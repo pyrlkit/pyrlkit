@@ -10,21 +10,21 @@ class StateInitException(Exception):
 class StateManagementException(Exception):
     def __init__(self, func):
         self.func = func
-        self.message = f"Something went wrong file training the model, the error is in the {func}() function"
+        self.message = f"Something went wrong while training the model, the error is in the {func}() function"
         super().__init__(self.message)
 
 
 class TrainingException(Exception):
     def __init__(self, func):
         self.func = func
-        self.message = f"Something went wrong file training the model, the error is in the {func}() function"
+        self.message = f"Something went wrong while training the model, the error is in the {func}() function"
         super().__init__(self.message)
 
 
 class ModelCreationException(Exception):
     def __init__(
         self,
-        message="Something went wrong whlie creating the model, the error is in the create_model() function",
+        message="Something went wrong while creating the model, the error is in the create_model() function",
     ):
         self.message = message
         super().__init__(message)
@@ -33,7 +33,16 @@ class ModelCreationException(Exception):
 class EnvCreationException(Exception):
     def __init__(
         self,
-        message="Something went wrong whlie creating the model, the error is in the create_env() function",
+        message="Something went wrong while creating the model, the error is in the create_env() function",
+    ):
+        self.message = message
+        super().__init__(message)
+
+
+class ChartCreationError(Exception):
+    def __init__(
+        self,
+        message="Something went wrong while creating the chart, the error is in the plot() function",
     ):
         self.message = message
         super().__init__(message)
