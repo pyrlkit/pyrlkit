@@ -27,7 +27,7 @@ BLACK = (0, 0, 0)
 
 
 class SnakeGameAI:
-    def __init__(self, width=800, height=600, speed=40, block_size=20):
+    def __init__(self, width=800, height=600, speed=200, block_size=20):
         self.width = width
         self.height = height
         self.speed = speed
