@@ -1,4 +1,5 @@
 import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -37,6 +38,8 @@ class EnhancedMultiLayerNN(nn.Module):
 
 
 class EnhancedMultiLayerTrainer:
+    """Using the model to implement training, this method will be customisable in the future"""
+
     def __init__(self, model, learning_rate, gamma):
         self.learning_rate = learning_rate
         self.gamma = gamma
@@ -74,6 +77,3 @@ class EnhancedMultiLayerTrainer:
         loss.backward()
 
         self.optimizer.step()
-
-
-# Rest of your code incorporating the EnhancedMultiLayerNN and EnhancedMultiLayerTrainer classes...

@@ -27,7 +27,7 @@ BLACK = (0, 0, 0)
 
 
 class SnakeGameAI:
-    def __init__(self, width=800, height=600, speed=200, block_size=20):
+    def __init__(self, width=800, height=600, speed=2000, block_size=20):
         self.width = width
         self.height = height
         self.speed = speed
@@ -36,6 +36,11 @@ class SnakeGameAI:
         pygame.display.set_caption("Snake")
         self.clock = pygame.time.Clock()
         self.reset_state()
+
+    def _cartesian_distance(self, a, b):
+        a1, a2 = a
+        b1, b2 = b
+        return ((b1 - a1) ** 2 + (b2 - a2) ** 2) ** 0.5
 
     def reset_state(self):
         """_summary_
