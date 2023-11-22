@@ -15,6 +15,7 @@ matplotlib-inline = "^0.1.6"
 pygame = "^2.5.2"
 Pillow = "^10.1.0"
 ipython = "^8.17.2"
+pytest = "^7.4.3"
 
 
 [build-system]
