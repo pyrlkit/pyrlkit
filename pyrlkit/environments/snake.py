@@ -74,32 +74,56 @@ class SnakeGameAI:
             self._place_food_random()
 
     def play_step(self, action):
-        self.frame_iteration += 1
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+        try:
+            self.frame_iteration += 1
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
 
-        self._move(action)
-        self.snake.insert(0, self.head)
+            self._move(action)
+            self.snake.insert(0, self.head)
 
-        reward = 0
-        game_over = False
-        if self.is_collision() or self.frame_iteration > 100 * len(self.snake):
-            game_over = True
-            reward = -10
+            reward = -1000000
+            game_over = False
+
+            if self.is_collision() or self.frame_iteration > 100 * len(self.snake):
+                game_over = True
+                # Gradated penalty based on collision type
+                if self.is_collision_wall():
+                    reward -= 2000
+                else:
+                    reward -= 500
+                return reward, game_over, self.score
+
+            # Reward based on proximity to food
+            dist_to_food = self._cartesian_distance(self.food, self.head)
+            reward += 10000 / (1 + dist_to_food)  # Inverse distance as a reward
+
+            # Track visited positions
+            visited_positions = []
+            x, y = self.head
+            if (x, y) not in visited_positions:
+                visited_positions.append((x, y))
+            else:
+                reward -= 100000
+
+            if self.head == self.food:
+                self.score += 1
+                # Dynamic reward based on snake size
+                reward += 20000
+                self._place_food_random()
+            else:
+                self.snake.pop()
+            print(reward)
+            self._update_ui()
+            self.clock.tick(self.speed)
             return reward, game_over, self.score
 
-        if self.head == self.food:
-            self.score += 1
-            reward = 10
-            self._place_food_random()
-        else:
-            self.snake.pop()
-
-        self._update_ui()
-        self.clock.tick(self.speed)
-        return reward, game_over, self.score
+        except Exception as e:
+            # Handle exceptions as needed
+            print(f"Error in play_step: {e}")
+            raise e
 
     def is_collision(self, pt=None):
         if pt is None:
@@ -114,6 +138,18 @@ class SnakeGameAI:
         if pt in self.snake[1:]:
             return True
 
+        return False
+
+    def is_collision_wall(self, pt=None):
+        if pt is None:
+            pt = self.head
+        if (
+            pt.x > self.width - self.block_size
+            or pt.x < 0
+            or pt.y > self.height - self.block_size
+            or pt.y < 0
+        ):
+            return True
         return False
 
     def _update_ui(self):

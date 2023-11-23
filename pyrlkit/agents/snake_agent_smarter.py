@@ -7,6 +7,7 @@ from tkinter import W
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
@@ -36,7 +37,7 @@ class SnakeAgent:
 
     def __init__(self, learning_rate, hidden_size):
         self.n_games = 0
-        self.epsilon = 0
+        self.epsilon = 0.1
         self.learning_rate = learning_rate
         self.hidden_size = hidden_size
         self.gamma = 0.9
@@ -44,7 +45,9 @@ class SnakeAgent:
         self.memory = deque(maxlen=MAX_MEMORY)
         self.model = EnhancedMultiLayerNN(11, self.hidden_size, 3)
         self.trainer = EnhancedMultiLayerTrainer(
-            self.model, learning_rate=self.learning_rate, gamma=self.gamma
+            self.model,
+            learning_rate=self.learning_rate,
+            gamma=self.gamma,
         )
 
     def get_state(self, game):
@@ -110,16 +113,20 @@ class SnakeAgent:
 
     def get_action(self, state):
         try:
-            self.epsilon = 80 - self.n_games
             final_move = [0, 0, 0]
-            if random.randint(0, 200) < self.epsilon:
+
+            if random.uniform(0, 1) < self.epsilon:
                 move = random.randint(0, 2)
                 final_move[move] = 1
             else:
                 state0 = torch.tensor(state, dtype=torch.float)
                 prediction = self.model(state0)
-                move = torch.argmax(prediction).item()
-                final_move[move] = 1
+                action = torch.argmax(prediction).item()
+                final_move[action] = 1
+
+            # Decay epsilon gradually to balance exploration and exploitation
+            if self.epsilon > 0.01:
+                self.epsilon -= 0.001  # Adjust the decay step as needed
 
             return final_move
         except Exception as e:
