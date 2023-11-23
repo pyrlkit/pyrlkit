@@ -46,18 +46,17 @@ For using the library locally, we recommend using poetry. Make sure you have poe
 
 Run `poetry install`
 
-We have a poetry lockfile to make sure the correct dependencies are set correctly
-
-You can build it as well but keep in mind that it is a work in progress
-
+We have a poetry lockfile to make sure the correct dependencies are installed
 
 ### Prerequisites
 
-All dependencies will be installled via the pip package
+All dependencies will be installled via the pip package.
 
 ### Installing
 
 A simple `pip install pyrlkit` should install the library, once it is up and running
+
+If you are running locally, you can run `poetry install` 
 
 ## 🎈 Usage <a name="usage"></a>
 
