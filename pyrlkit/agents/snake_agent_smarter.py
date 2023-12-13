@@ -3,7 +3,6 @@ import os
 import random
 import sys
 from collections import deque
-from tkinter import W
 
 import numpy as np
 import torch
