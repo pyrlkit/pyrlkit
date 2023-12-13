@@ -1,4 +1,4 @@
-from pyrlkit.agents.snake_agent import (
+from pyrlkit.agents.snake_agent_smarter import (
     create_env,
     create_model,
     train,
@@ -7,5 +7,5 @@ from pyrlkit.agents.snake_agent import (
 
 model = create_model()
 env = create_env()
-train(agent=model, env=env, learning_rate=-1.001, hidden_size=32, num_cycles=10)
+train(agent=model, env=env, learning_rate=0.0001, hidden_size=512, num_cycles=500)
 save_model_as_pythorch(model, "output")
